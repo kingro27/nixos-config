@@ -14,21 +14,27 @@
 
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nvf, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, nvf, ... }:
 
-    packages."x86_64-linux".default =
-      (nvf.lib.neovimConfiguration {
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
-	modules = [ ./nvf-configuration.nix ];
-      }).neovim;
+  let
+    myNeovim = (nvf.lib.neovimConfiguration {
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      modules = [ ./nvf-configuration.nix ];
+    }).neovim;
+  in
+
+  {
+
+    packages."x86_64-linux".default = myNeovim;
 
     nixosConfigurations = {
       TARDIS = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; myNeovim = myNeovim; };
         modules = [
 	  ./configuration.nix
 
 	  ({pkgs, ...}: {
-	    environment.systemPackages = [ self.packages.${pkgs.stdenv.system}.nvim ];
+	    environment.systemPackages = [ myNeovim ];
 	  })
 
 	  home-manager.nixosModules.home-manager

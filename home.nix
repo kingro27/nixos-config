@@ -38,7 +38,9 @@
     waybar
     swayosd
     unzip
+    lua
     nautilus
+    wl-clipboard
     vimPlugins.plenary-nvim
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them

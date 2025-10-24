@@ -6,17 +6,44 @@
       ./hardware-configuration.nix
     ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    loader = {
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+	efiSupport = true;
+	device = "nodev";
+      };
+    };
+  };
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  networking = {
+    hostName = "TARDIS";
+    networkmanager = {
+      enable = true;
+      dns = "none";
+      wifi.powersave = true;
+    };
+    useDHCP = false;
+    dhcpcd.enable = false;
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+  };
 
-  networking.hostName = "TARDIS"; # Define your hostname.
+  services.tlp.enable = true;
+  services.power-profiles-daemon.enable = false;
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  virtualisation = {
+    containers.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Kathmandu";

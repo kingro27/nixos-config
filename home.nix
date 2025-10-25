@@ -41,6 +41,7 @@
     lua
     nautilus
     wl-clipboard
+    qbittorrent
     vimPlugins.plenary-nvim
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them

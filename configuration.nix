@@ -43,7 +43,10 @@
       dockerCompat = true;
       defaultNetwork.settings.dns_enabled = true;
     };
+    libvirtd.enable = true;
   };
+  
+  programs.virt-manager.enable = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Kathmandu";
@@ -130,7 +133,7 @@
   users.users.doctor = {
     isNormalUser = true;
     description = "doctor";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [
     #  thunderbird
     ];

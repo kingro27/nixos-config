@@ -16,6 +16,7 @@
       expandtab = true;
       smartindent = true;
       wrap = false;
+      linebreak = true;
       hlsearch = false;
       incsearch = true;
       scrolloff = 8;
@@ -77,17 +78,22 @@
       style = "dark";
     };
 
+    autocomplete.blink-cmp = {
+      enable = true;
+      friendly-snippets.enable = true;
+    };
+
     statusline.lualine.enable = true;
     telescope.enable = true;
-    autocomplete.nvim-cmp.enable = true;
 
     languages = {
-      enableLSP = true;
+      enableFormat = true;
       enableTreesitter = true;
-
-      nix.enable = true;
-      ts.enable = true;
-      rust.enable = true;
+      
+      nix = {
+        enable = true;
+        lsp.enable = true;
+      };
     };
   };
 }

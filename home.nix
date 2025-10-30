@@ -40,9 +40,11 @@
     unzip
     lua
     nautilus
+    opencode
     wl-clipboard
     qbittorrent
-    vimPlugins.plenary-nvim
+    gemini-cli
+    discord
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
 

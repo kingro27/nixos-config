@@ -33,6 +33,7 @@
     stow
     alacritty
     fuzzel
+    spotify
     uwsm
     mako
     waybar

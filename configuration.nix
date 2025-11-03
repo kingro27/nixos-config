@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -66,6 +66,15 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
+  };
+
+  programs.spicetify =
+  let
+      spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  in
+  {
+    enable = true;
+    theme = spicePkgs.themes.catppuccin;
   };
 
   hardware.bluetooth.enable = true;

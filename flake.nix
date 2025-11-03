@@ -17,9 +17,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nvf, mango, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nvf, mango, spicetify-nix, ... }:
 
   let
     myNeovim = (nvf.lib.neovimConfiguration {
@@ -36,24 +38,26 @@
       TARDIS = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; myNeovim = myNeovim; };
         modules = [
-	  ./configuration.nix
+          ./configuration.nix
+
+          spicetify-nix.nixosModules.default
 
           mango.nixosModules.mango
           {
             programs.mango.enable = true;
           }
 
-	  ({pkgs, ...}: {
-	    environment.systemPackages = [ myNeovim ];
-	  })
+          ({pkgs, ...}: {
+            environment.systemPackages = [ myNeovim ];
+          })
 
-	  home-manager.nixosModules.home-manager
-	  {
-	    home-manager.useGlobalPkgs = true;
-	    home-manager.useUserPackages = true;
-	    home-manager.users.doctor = import ./home.nix;
-	  }
-	];
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.doctor = import ./home.nix;
+          }
+        ];
       };
     };
   };

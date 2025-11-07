@@ -16,12 +16,9 @@
       url = "github:DreamMaoMao/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nvf, mango, spicetify-nix, ... }:
+  outputs = { self, nixpkgs, home-manager, nvf, mango, ... }@inputs:
 
   let
     myNeovim = (nvf.lib.neovimConfiguration {
@@ -39,8 +36,6 @@
         specialArgs = { inherit inputs; myNeovim = myNeovim; };
         modules = [
           ./configuration.nix
-
-          spicetify-nix.nixosModules.default
 
           mango.nixosModules.mango
           {

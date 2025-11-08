@@ -29,6 +29,7 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     brave
+    btop
     git
     stow
     alacritty
@@ -43,6 +44,7 @@
     nautilus
     opencode
     wl-clipboard
+    waydroid-nftables
     qbittorrent
     gemini-cli
     discord

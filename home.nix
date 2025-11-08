@@ -30,6 +30,7 @@
   home.packages = with pkgs; [
     brave
     btop
+    fastfetch
     git
     stow
     alacritty

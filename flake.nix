@@ -11,14 +11,9 @@
     };
 
     nvf.url = "github:notashelf/nvf/v0.8";
-
-    mango = {
-      url = "github:DreamMaoMao/mango";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nvf, mango, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nvf, ... }@inputs:
 
   let
     myNeovim = (nvf.lib.neovimConfiguration {
@@ -36,11 +31,6 @@
         specialArgs = { inherit inputs; myNeovim = myNeovim; };
         modules = [
           ./configuration.nix
-
-          mango.nixosModules.mango
-          {
-            programs.mango.enable = true;
-          }
 
           ({pkgs, ...}: {
             environment.systemPackages = [ myNeovim ];

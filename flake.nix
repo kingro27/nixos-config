@@ -13,9 +13,14 @@
     nvf.url = "github:notashelf/nvf/v0.8";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+    disko = {
+      url = "github:nix-community/disko/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nvf, nix-flatpak, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nvf, nix-flatpak, disko, ... }@inputs:
 
   let
     myNeovim = (nvf.lib.neovimConfiguration {
@@ -34,6 +39,8 @@
         modules = [
 
           nix-flatpak.nixosModules.nix-flatpak
+
+          disko.nixosModules.disko
 
           ./configuration.nix
 

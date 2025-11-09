@@ -1,10 +1,9 @@
 { config, pkgs, inputs, ... }:
 
 {
-  imports =
-    [
+  imports = [
       ./hardware-configuration.nix
-    ];
+  ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -48,7 +47,46 @@
     };
     libvirtd.enable = true;
   };
-  
+
+  disko.devices = {
+    disk = {
+      nvme0n1 = {
+        device = "/dev/nvme0n1";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            boot = {
+              size = "1G";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = [ "fmask=0077" "dmask=0077" ];
+              };
+            };
+            root = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
+              };
+            };
+            swap = {
+              size = "16.6G";
+              content = {
+                type = "swap";
+                resumeDevice = true;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+
   programs.virt-manager.enable = true;
 
   # Set your time zone.

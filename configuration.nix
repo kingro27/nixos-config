@@ -35,7 +35,6 @@
   };
 
   services.tlp.enable = true;
-  services.power-profiles-daemon.enable = false;
 
   virtualisation = {
     waydroid = {
@@ -112,7 +111,12 @@
   programs.localsend.enable = true;
   programs.localsend.openFirewall = true;
 
-  services.flatpak.enable = true;
+  services.flatpak = {
+    enable = true;
+    packages = [
+      "app.zen_browser.zen"
+    ];
+  };
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;

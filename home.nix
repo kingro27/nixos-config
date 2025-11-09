@@ -48,6 +48,7 @@
     opencode
     wl-clipboard
     qbittorrent
+    libnotify
     gemini-cli
     discord
     # here is some command line tools I use frequently

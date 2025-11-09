@@ -12,13 +12,14 @@
       efi.canTouchEfiVariables = true;
       grub = {
         enable = true;
-	efiSupport = true;
-	device = "nodev";
+        efiSupport = true;
+        device = "nodev";
       };
     };
   };
 
   networking = {
+    nftables.enable = true;
     hostName = "TARDIS";
     networkmanager = {
       enable = true;
@@ -37,7 +38,9 @@
   services.power-profiles-daemon.enable = false;
 
   virtualisation = {
-    waydroid.enable = true;
+    waydroid = {
+      enable = true;
+    };
     containers.enable = true;
     podman = {
       enable = true;

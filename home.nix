@@ -31,7 +31,9 @@
     brave
     btop
     fastfetch
+    kdePackages.kate
     git
+    zed
     stow
     alacritty
     fuzzel
@@ -45,7 +47,6 @@
     nautilus
     opencode
     wl-clipboard
-    waydroid-nftables
     qbittorrent
     gemini-cli
     discord

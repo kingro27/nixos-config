@@ -11,9 +11,11 @@
     };
 
     nvf.url = "github:notashelf/nvf/v0.8";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
-  outputs = { self, nixpkgs, home-manager, nvf, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nvf, nix-flatpak, ... }@inputs:
 
   let
     myNeovim = (nvf.lib.neovimConfiguration {
@@ -30,6 +32,9 @@
       TARDIS = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; myNeovim = myNeovim; };
         modules = [
+
+          nix-flatpak.nixosModules.nix-flatpak
+
           ./configuration.nix
 
           ({pkgs, ...}: {

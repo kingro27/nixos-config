@@ -30,8 +30,11 @@
   home.packages = with pkgs; [
     brave
     btop
+<<<<<<< HEAD
     fastfetch
     kdePackages.kate
+=======
+>>>>>>> parent of db16240 (added fastfetch)
     git
     zed
     stow

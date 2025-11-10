@@ -12,7 +12,7 @@
   {
 
     nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
+      TARDIS = nixpkgs.lib.nixosSystem {
         modules = [
           disko.nixosModules.disko
           ./configuration.nix

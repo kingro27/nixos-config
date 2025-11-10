@@ -3,6 +3,7 @@
 {
   imports = [
       ./hardware-configuration.nix
+      ./disko-config.nix
   ];
 
   boot = {
@@ -18,6 +19,7 @@
   };
 
   networking = {
+    firewall.enable = false;
     nftables.enable = true;
     hostName = "TARDIS";
     networkmanager = {

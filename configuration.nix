@@ -7,17 +7,39 @@
       ./disko-config.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    loader = {
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+      };
+    };
+  };
 
-  # networking.hostName = "nixos"; # Define your hostname.
-
-  # Configure network connections interactively with nmcli or nmtui.
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "test";
+    networkmanager = {
+      enable = true;
+      dns = "none";
+      wifi.powersave = true;
+    };
+    useDHCP = false;
+    dhcpcd.enable = false;
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+  };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Asia/Kathmandu";
+
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -58,7 +80,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.test = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       tree
     ];

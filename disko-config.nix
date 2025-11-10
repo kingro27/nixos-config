@@ -1,7 +1,7 @@
 {
   disko.devices = {
     disk = {
-      main = {
+      nixos = {
         device = "/dev/vda";
         type = "disk";
         content = {
@@ -17,20 +17,20 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
-            root = {
-              size = "100G";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
-              };
-            };
             swap = {
               size = "8G";
               content = {
                 type = "swap";
                 discardPolicy = "both";
                 resumeDevice = true; # resume from hiberation from this device
+              };
+            };
+            root = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
               };
             };
           };

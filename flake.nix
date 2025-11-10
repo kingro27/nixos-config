@@ -1,7 +1,5 @@
 # /etc/nixos/flake.nix
 {
-  description = "New NixOS configuration";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -34,7 +32,7 @@
     packages."x86_64-linux".default = myNeovim;
 
     nixosConfigurations = {
-      TARDIS = nixpkgs.lib.nixosSystem {
+      nixos = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; myNeovim = myNeovim; };
         modules = [
 
@@ -52,7 +50,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.doctor = import ./home.nix;
+            home-manager.users.test = import ./home.nix;
           }
         ];
       };

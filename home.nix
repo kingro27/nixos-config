@@ -30,11 +30,8 @@
   home.packages = with pkgs; [
     brave
     btop
-<<<<<<< HEAD
     fastfetch
     kdePackages.kate
-=======
->>>>>>> parent of db16240 (added fastfetch)
     git
     zed
     stow
@@ -54,6 +51,7 @@
     libnotify
     gemini-cli
     discord
+    mpv
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
 

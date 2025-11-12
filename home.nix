@@ -55,8 +55,14 @@ in
 
   programs.git = {
     enable = true;
-    userName = "kingro27";
-    userEmail = "96186913+kingro27@users.noreply.github.com";
+    settings.user = {
+      name = "kingro27";
+      email = "96186913+kingro27@users.noreply.github.com";
+    };
+  };
+
+  dconf.settings = {
+      "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
   home.stateVersion = "25.05";

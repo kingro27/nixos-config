@@ -111,9 +111,6 @@
 
   # Dconf Config
   programs.dconf.enable = true;
-  programs.profiles.user.databases = [{ 
-    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark"; 
-  }];
 
   # XDG config
   xdg.portal.xdgOpenUsePortal = true;

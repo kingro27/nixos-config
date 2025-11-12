@@ -1,197 +1,140 @@
-{ config, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  imports = [
+  imports =
+    [ 
       ./hardware-configuration.nix
-  ];
-
-  boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
-    loader = {
-      efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        efiSupport = true;
-        device = "nodev";
-      };
-    };
-  };
-
-  networking = {
-    nftables.enable = true;
-    hostName = "TARDIS";
-    networkmanager = {
-      enable = true;
-      dns = "none";
-      wifi.powersave = true;
-    };
-    useDHCP = false;
-    dhcpcd.enable = false;
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
     ];
-  };
 
-  services.tlp.enable = true;
-
-  virtualisation = {
-    waydroid = {
-      enable = true;
-    };
-    containers.enable = true;
-    podman = {
-      enable = true;
-      dockerCompat = true;
-      defaultNetwork.settings.dns_enabled = true;
-    };
-    libvirtd.enable = true;
-  };
-
-  programs.virt-manager.enable = true;
-
-  # Set your time zone.
+  # Set Time Zone
   time.timeZone = "Asia/Kathmandu";
 
-  # Select internationalisation properties.
+  # Set Locale
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Enable the X11 windowing system.
+  # Set Grub Config
+  boot.loader.grub.enable = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Linux Kernel Image
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # Host Name
+  networking.hostName = "TARDIS";
+
+  # nftables
+  networking.nftables.enable = true;
+
+  # DHCP Server config
+  networking.useDHCP = false;
+  networking.dhcpcd.enable = false;
+
+  # Network Manager Config
+  networking.networkmanager.enable = true;
+  networking.networkmanager.dns = "none";
+  networking.networkmanager.wifi.powersave = true;
+  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+
+  # Waydroid Config
+  virtualisation.waydroid.enable = true;
+
+  # Container Config (Podman)
+  virtualisation.containers.enable = true;
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
+  virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
+
+  # Virtual Machines (libvirtd)
+  virtualisation.libvirtd.enable = true;
+
+  # Xserver config
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
+  # Keyboard Config
+  services.xserver.xkb.layout = "us";
+  services.xserver.xkb.variant = "";
+
+  # Flatpak Config
+  services.flatpak.enable = true;
+  services.flatpak.packages = [ "app.zen_browser.zen" ];
+
+  # Sound Config
+  services.pulseaudio.enable = false;
+  services.pipewire.enable = true;
+  services.pipewire.alsa.enable = true;
+  services.pipewire.alsa.support32Bit = true;
+  services.pipewire.pulse.enable = true;
+
+  # GDM Display Manager
   services.displayManager.gdm.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Enable Printing
+  services.printing.enable = true;
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+  # TLP Config
+  services.tlp.enable = true;
 
+  # Bluetooth Enable
   hardware.bluetooth.enable = true;
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
+  # Graphics Enable
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
 
+  # Firefox
+  programs.firefox.enable = false;
+
+  # Neovim
+  programs.neovim.defaultEditor = false;
+  programs.neovim.enable = false;
+
+  # Niri
+  programs.niri.enable = true;
+
+  # Localsend
+  programs.localsend.enable = true;
+  programs.localsend.openFirewall = true;
+
+  # Steam
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
-
   environment.sessionVariables = {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS =
       "/home/doctor/.steam/root/compatibilitytools.d";
   };
 
-  programs.dconf = {
-    enable = true;
-    profiles.user.databases = [{
-      settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
-    }];
-  };
+  # Virt-manager
+  programs.virt-manager.enable = true;
 
-  xdg.portal = {
-    xdgOpenUsePortal = true;
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gnome
-      xdg-desktop-portal-gtk
-    ];
-  };
+  # Dconf Config
+  programs.dconf.enable = true;
+  programs.profiles.user.databases = [{ 
+    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark"; 
+  }];
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # XDG config
+  xdg.portal.xdgOpenUsePortal = true;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gnome
+    xdg-desktop-portal-gtk
+  ];
 
-  programs.niri.enable = true;
+  # User Config
+  users.users.doctor.isNormalUser = true;
+  users.users.doctor.description = "doctor";
+  users.users.doctor.extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
 
-  programs.localsend.enable = true;
-  programs.localsend.openFirewall = true;
+  # Flakes enable
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  services.flatpak = {
-    enable = true;
-    packages = [
-      "app.zen_browser.zen"
-    ];
-  };
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.doctor = {
-    isNormalUser = true;
-    description = "doctor";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
-  };
-
-  # Install firefox.
-  programs.firefox.enable = true;
- 
-  programs.neovim.defaultEditor = true;
-  programs.neovim.enable = true;
-
-  # Allow unfree packages
+  # allow unfree software
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    xwayland-satellite
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
-
-  fonts.packages = with pkgs; [
-    nerd-fonts.caskaydia-mono
-  ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; 
 
 }
+

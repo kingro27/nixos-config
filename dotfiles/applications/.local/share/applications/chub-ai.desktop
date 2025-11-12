@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Chub-AI
+StartupNotify=true
+StartupWMClass=chub-ai
+TryExec=brave
+Exec=brave --enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland --profile-directory=chub
+Terminal=false
+Icon=/home/doctor/.local/share/icons/chub-ai.png
+Type=Application
+Categories=Network;WebBrowser;

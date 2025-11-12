@@ -1,0 +1,132 @@
+input {
+  touchpad {
+      tap
+      dwt
+      natural-scroll
+  }
+}
+
+gestures {
+    hot-corners {
+        off
+    }
+    dnd-edge-view-scroll {
+        trigger-width 100
+        max-speed 3000
+    }
+    dnd-edge-workspace-switch {
+        trigger-height 100
+        max-speed 3000
+    }
+}
+
+window-rule {
+    match title="Picture-in-Picture"
+    open-floating true
+}
+
+spawn-at-startup "hypridle"
+spawn-at-startup "mako"
+spawn-at-startup "waybar"
+spawn-at-startup "fcitx5"
+spawn-at-startup "swayosd-server"
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+
+binds {
+
+    Mod+Tab                                                 { focus-workspace-down; }
+    Mod+Shift+Tab                                           { focus-workspace-up; }
+    Mod+Ctrl+Tab                                            { focus-workspace-previous; }
+
+    Mod+C                                                   { consume-or-expel-window-right; }
+    Mod+X                                                   { consume-or-expel-window-left; }
+
+    Mod+T                                                   { spawn-sh "bluetoothctl connect 41:42:FF:95:43:BC"; }
+    Mod+Shift+T                                             { spawn-sh "bluetoothctl disconnect"; }
+
+    // Menu & Terminal
+    Mod+Return                                              { spawn "alacritty"; }
+    Alt+Space                                               { spawn "fuzzel"; }
+
+    // Quit Niri or kill focused window
+    Mod+Q                                                   { close-window; }
+    Mod+Shift+Q                                             { quit; }
+
+    // Switch focused window
+    Alt+Tab                                                 { focus-window-down-or-column-right; }
+    Alt+Shift+Tab                                           { focus-window-up-or-column-left; }
+    Alt+Ctrl+Tab                                            { focus-column-right-or-first; }
+    Mod+L                                                   { focus-column-right-or-first; }
+    Mod+H                                                   { focus-column-left-or-last; }
+    Mod+J                                                   { focus-window-down-or-top; }
+    Mod+K                                                   { focus-window-up-or-bottom; }
+
+    // Swap Windows
+    Mod+Shift+H                                             { swap-window-left; }
+    Mod+Shift+L                                             { swap-window-right; }
+    Mod+Shift+K                                             { move-window-up; }
+    Mod+Shift+J                                             { move-window-down; }
+
+    // Resize Windows
+    Ctrl+Alt+L                                              { set-column-width "+100"; }
+    Ctrl+Alt+H                                              { set-column-width "-100"; }
+    Ctrl+Alt+K                                              { set-window-height "+100"; }
+    Ctrl+Alt+J                                              { set-window-height "-100"; }
+
+    // Switch Window Status
+    Mod+V                                                   { toggle-window-floating; }
+    Mod+F                                                   { maximize-column; }
+    Mod+Shift+F                                             { fullscreen-window; }
+    Mod+Ctrl+F                                              { expand-column-to-available-width; }
+
+    // Workspace Switch
+    Mod+Ctrl+K                                              { focus-workspace-up; }
+    Mod+Ctrl+J                                              { focus-workspace-down; }
+    Mod+1                                                   { focus-workspace 1; }
+    Mod+2                                                   { focus-workspace 2; }
+    Mod+3                                                   { focus-workspace 3; }
+    Mod+4                                                   { focus-workspace 4; }
+    Mod+5                                                   { focus-workspace 5; }
+    Mod+6                                                   { focus-workspace 6; }
+    Mod+7                                                   { focus-workspace 7; }
+    Mod+8                                                   { focus-workspace 8; }
+    Mod+9                                                   { focus-workspace 9; }
+    Mod+0                                                   { focus-workspace 10; }
+
+    // Move window to workspace
+    Alt+K                                                   { move-window-to-workspace-up; }
+    Alt+J                                                   { move-window-to-workspace-down; }
+    Alt+1                                                   { move-window-to-workspace 1; }
+    Alt+2                                                   { move-window-to-workspace 2; }
+    Alt+3                                                   { move-window-to-workspace 3; }
+    Alt+4                                                   { move-window-to-workspace 4; }
+    Alt+5                                                   { move-window-to-workspace 5; }
+    Alt+6                                                   { move-window-to-workspace 6; }
+    Alt+7                                                   { move-window-to-workspace 7; }
+    Alt+8                                                   { move-window-to-workspace 8; }
+    Alt+9                                                   { move-window-to-workspace 9; }
+    Alt+0                                                   { move-window-to-workspace 10; }
+
+    // Audio & Brightness Control
+    XF86AudioRaiseVolume                                    { spawn "swayosd-client" "--output-volume" "raise"; }
+    XF86AudioLowerVolume                                    { spawn "swayosd-client" "--output-volume" "lower"; }
+    XF86AudioMute                                           { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
+    XF86AudioMicMute                                        { spawn "swayosd-client" "--input-volume" "mute-toggle"; }
+    XF86MonBrightnessUp                                     { spawn "swayosd-client" "--brightness" "raise"; }
+    XF86MonBrightnessDown                                   { spawn "swayosd-client" "--brightness" "lower"; }
+    
+    // Precise Audio & Brightness Control
+    Alt+XF86AudioRaiseVolume                                { spawn "swayosd-client" "--output-volume" "+1"; }
+    Alt+XF86AudioLowerVolume                                { spawn "swayosd-client" "--output-volume" "-1"; }
+    Alt+XF86MonBrightnessUp                                 { spawn "swayosd-client" "--brightness" "+1"; }
+    Alt+XF86MonBrightnessDown                               { spawn "swayosd-client" "--brightness" "-1"; }
+
+    // Media Player Control
+    XF86AudioNext                                           { spawn "swayosd-client" "--playerctl" "next"; }
+    XF86AudioPause                                          { spawn "swayosd-client" "--playerctl" "play-pause"; }
+    XF86AudioPlay                                           { spawn "swayosd-client" "--playerctl" "play-pause"; }
+    XF86AudioPrev                                           { spawn "swayosd-client" "--playerctl" "previous"; }
+
+    // Custom App binds
+    Mod+E                                                   { spawn "nautilus"; }
+}

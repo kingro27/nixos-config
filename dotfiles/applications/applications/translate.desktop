@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=Translate
+StartupNotify=true
+StartupWMClass=translate
+TryExec=brave
+Exec=brave --enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland --profile-directory=german --app=https://translate.google.com
+Terminal=false
+Icon=/home/doctor/.local/share/icons/translate.png
+Type=Application
+

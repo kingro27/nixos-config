@@ -1,0 +1,25 @@
+[Container]
+ContainerName=sillytavern
+Image=ghcr.io/sillytavern/sillytavern:latest
+HostName=sillytavern
+
+# Environment variables
+Environment=NODE_ENV=production FORCE_COLOR=1
+
+# Port mapping (HOST_PORT:CONTAINER_PORT)
+PublishPort=8000:8000
+
+# Volume mounts (HOST_PATH:CONTAINER_PATH:OPTIONS)
+# The `z` option ensures proper SELinux context for rootless containers.
+Volume=/home/doctor/SillyTavern/config:/home/node/app/config:z
+Volume=/home/doctor/SillyTavern/data:/home/node/app/data:z
+Volume=/home/doctor/SillyTavern/plugins:/home/node/app/plugins:z
+Volume=/home/doctor/SillyTavern/extensions:/home/node/app/public/scripts/extensions/third-party:z
+
+# Automatically update the image from the registry on restart
+AutoUpdate=registry
+
+[Install]
+# Enable the service to start automatically on system boot.
+WantedBy=default.target
+

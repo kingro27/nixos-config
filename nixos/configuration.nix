@@ -1,10 +1,35 @@
-{ config, lib, pkgs, ... }:
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ 
-      ./hardware-configuration.nix
+  imports = [ 
+    ./hardware-configuration.nix
+  ];
+
+  nixpkgs = {
+    overlays = with outputs.overlays; [
     ];
+    config.allowUnfree = true;
+  };
+
+  nix = let
+    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  in {
+    settings = {
+      experimental-features = "nix-command flakes";
+      flake-registry = "";
+    };
+    channel.enable = false;
+
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+  };
 
   # Set Time Zone
   time.timeZone = "Asia/Kathmandu";
@@ -124,12 +149,6 @@
   users.users.doctor.isNormalUser = true;
   users.users.doctor.description = "doctor";
   users.users.doctor.extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
-
-  # Flakes enable
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # allow unfree software
-  nixpkgs.config.allowUnfree = true;
 
   system.stateVersion = "25.11"; 
 

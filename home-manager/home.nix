@@ -5,32 +5,30 @@ let
 in
 
 {
+  import = [
+    ./packages.nix
+  ];
   home.username = "doctor";
   home.homeDirectory = "/home/doctor";
 
   home.file.".config/fastfetch" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/dotfiles/fastfetch";
+    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/nixos-config/dotfiles/fastfetch";
   };
 
   home.file.".config/niri" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/dotfiles/niri";
+    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/nixos-config/dotfiles/niri";
   };
 
   home.file.".config/mako" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/dotfiles/mako";
+    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/nixos-config/dotfiles/mako";
   };
 
   home.file.".config/containers/systemd" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/dotfiles/containers";
-  };
-
-  home.file.".local/share/applications" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/dotfiles/applications/applications";
-    executable = true;
+    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/nixos-config/dotfiles/containers";
   };
 
   home.file.".local/share/icons" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/dotfiles/applications/icons";
+    source = config.lib.file.mkOutOfStoreSymlink "${homeDir}/nixos-config/dotfiles/applications/icons";
   };
 
   home.packages = with pkgs; [

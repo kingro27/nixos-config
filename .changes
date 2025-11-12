@@ -1,0 +1,106 @@
+Here is a list of all the changes I made during our conversation:
+
+1.  **Created `/home/doctor/nixos-config/overlays/nvf.nix`**:
+    *   This new file defines an overlay for the `nvf` package, making it available to other Nix modules.
+
+2.  **Modified `/home/doctor/nixos-config/overlays/default.nix`**:
+    *   Added `nvf = import ./nvf.nix inputs;` to include the newly created `nvf.nix` overlay.
+
+3.  **Modified `/home/doctor/nixos-config/flake.nix`**:
+    *   Removed the `myNeovim` variable definition:
+        ```diff
+-    myNeovim = (nvf.lib.neovimConfiguration {
+-      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+-      modules = [ ./nvf-configuration.nix ];
+-    }).neovim;
+        ```
+    *   Removed the system-wide Neovim package definition:
+        ```diff
+-    # The NVF package as neovim
+-    packages."x86_64-linux".default = myNeovim;
+        ```
+    *   Updated the `nixosConfigurations.TARDIS` section to:
+        *   Remove `myNeovim` from `specialArgs`.
+        *   Remove the `environment.systemPackages = [ myNeovim ];` block.
+        *   Add `nixpkgs.overlays = [ self.overlays.nvf ];` to the `home-manager.users.doctor` configuration, applying the `nvf` overlay.
+        ```diff
+-    nixosConfigurations.TARDIS = nixpkgs.lib.nixosSystem {
+-      specialArgs = { inherit inputs outputs; myNeovim = myNeovim; };
+-      modules = [
+-        ./nixos/configuration.nix
+-
+-        # NixOS module for Nix Flatpak
+-        nix-flatpak.nixosModules.nix-flatpak
+-
+-        ({pkgs, ...}: {
+-          environment.systemPackages = [ myNeovim ];
+-        })
+-
+-        # Nix OS module for Home Manager
+-        home-manager.nixosModules.home-manager
+-        {
+-          home-manager.useGlobalPkgs = true;
+-          home-manager.useUserPackages = true;
+-          home-manager.users.doctor = {
+-            imports = [
+-                ./home-manager/home.nix
+-            ];
+-          };
+-        }
+-      ];
+-    };
++    nixosConfigurations.TARDIS = nixpkgs.lib.nixosSystem {
++      specialArgs = { inherit inputs outputs; };
++      modules = [
++        ./nixos/configuration.nix
++
++        # NixOS module for Nix Flatpak
++        nix-flatpak.nixosModules.nix-flatpak
++
++        # Nix OS module for Home Manager
++        home-manager.nixosModules.home-manager
++        {
++          home-manager.useGlobalPkgs = true;
++          home-manager.useUserPackages = true;
++          home-manager.users.doctor = {
++            imports = [
++                ./home-manager/home.nix
++            ];
++            nixpkgs.overlays = [ self.overlays.nvf ];
++          };
++        }
++      ];
++    };
+        ```
+
+4.  **Modified `/home/doctor/nixos-config/home-manager/home.nix`**:
+    *   Added `nvf` to the `home.packages` list to install Neovim via the overlay:
+        ```diff
+-  home.packages = with pkgs; [
+-    # ... other packages ...
+-  ];
++  home.packages = with pkgs; [
++    # ... other packages ...
++    nvf.neovim
++  ];
+        ```
+    *   Added `nvf` as an argument to the `home.nix` function:
+        ```diff
+-{
+-  inputs,
+-  outptus,
+-  lib,
+-  config,
+-  pkgs,
+-  ...
+}:
++{
+-  inputs,
+-  outptus,
+-  lib,
+-  config,
+-  pkgs,
+-  nvf,
+-  ...
+}:
+        ```

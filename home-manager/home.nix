@@ -1,13 +1,20 @@
-{ config, pkgs, ... }:
+{
+  inputs,
+  outptus,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
   homeDir = config.home.homeDirectory;
 in
 
 {
-  import = [
-    ./packages.nix
+  imports = [
   ];
+
   home.username = "doctor";
   home.homeDirectory = "/home/doctor";
 
@@ -46,6 +53,7 @@ in
     nautilus
     qbittorrent
     swayosd
+    tree
     unzip
     waybar
     wl-clipboard
@@ -62,6 +70,8 @@ in
   dconf.settings = {
       "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
+
+  programs.home-manager.enable = true;
 
   home.stateVersion = "25.05";
 }
